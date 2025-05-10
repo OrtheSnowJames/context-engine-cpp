@@ -173,11 +173,21 @@ public:
         );
         
         // Draw a line from the player to the mouse position
+        // Convert screen mouse coordinates to world coordinates
+        Vector2 cameraPos = ctx->getCameraPosition();
+        float zoom = ctx->getCameraZoom();
+        
+        // Screen to world coordinate conversion:
+        // 1. Divide by zoom to account for scaling
+        // 2. Add camera position to translate to world space
+        float worldMouseX = static_cast<float>(lastMouseX) / zoom + cameraPos.x;
+        float worldMouseY = static_cast<float>(lastMouseY) / zoom + cameraPos.y;
+        
         ctx->drawLine(
             centerX,
             centerY,
-            static_cast<float>(lastMouseX),
-            static_cast<float>(lastMouseY),
+            worldMouseX,
+            worldMouseY,
             Color(255, 255, 0)
         );
         

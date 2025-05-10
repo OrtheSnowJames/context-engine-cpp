@@ -54,23 +54,47 @@ fi
 compile "Context Engine" "g++ -c context-engine.cpp -o build/context-engine.o $SDL_CFLAGS -std=c++17 -Wall -Wextra"
 if [ $? -ne 0 ]; then exit 1; fi
 
-# Compile and link the test executable
-compile "Test" "g++ -c test.cpp -o build/test.o $SDL_CFLAGS -std=c++17 -Wall -Wextra"
+# Compile the typing test game
+compile "Typing Test Game" "g++ -c typing_test.cpp -o build/typing_test.o $SDL_CFLAGS -std=c++17 -Wall -Wextra"
 if [ $? -ne 0 ]; then exit 1; fi
 
-compile "Test Executable" "g++ build/context-engine.o build/test.o -o build/test $SDL_LIBS $SDL_TTF_LIBS -std=c++17"
+# Link the final executable
+compile "Typing Test Executable" "g++ build/context-engine.o build/typing_test.o -o build/typing_test $SDL_LIBS $SDL_TTF_LIBS -std=c++17"
 if [ $? -ne 0 ]; then exit 1; fi
 
 # Copy assets to the build directory
 echo -e "${YELLOW}Copying assets to build directory...${NC}"
 mkdir -p build/assets
-cp -r assets/* build/assets/
+mkdir -p assets
+
+# Copy any existing assets
+cp -r assets/* build/assets/ 2>/dev/null || true
+
+# Copy JetBrains Mono font
+FONT_PATH="/usr/share/fonts/TTF/JetBrainsMono-Regular.ttf"
+if [ -f "$FONT_PATH" ]; then
+    echo -e "${GREEN}Copying JetBrains Mono font...${NC}"
+    cp "$FONT_PATH" build/assets/JetBrainsMono-Regular.ttf
+    cp "$FONT_PATH" assets/font.ttf
+else
+    echo -e "${RED}JetBrains Mono font not found at $FONT_PATH!${NC}"
+    echo -e "${YELLOW}Looking for alternative JetBrains Mono fonts...${NC}"
+    ALT_FONT=$(find /usr/share/fonts/TTF -name "JetBrainsMono-Regular.ttf" -o -name "JetBrainsMono*.ttf" | head -n 1)
+    if [ -n "$ALT_FONT" ]; then
+        echo -e "${GREEN}Found alternative JetBrains Mono font: $ALT_FONT${NC}"
+        cp "$ALT_FONT" build/assets/JetBrainsMono-Regular.ttf
+        cp "$ALT_FONT" assets/font.ttf
+    else
+        echo -e "${RED}No JetBrains Mono font found. Using system default font.${NC}"
+    fi
+fi
+
 echo -e "${GREEN}Assets copied successfully${NC}"
 
 # Run the game if requested
 if [ "$1" == "run" ] || [ "$2" == "run" ]; then
-    echo -e "${YELLOW}Running Test...${NC}"
-    cd build && ./test
+    echo -e "${YELLOW}Running Typing Test...${NC}"
+    cd build && ./typing_test
 fi
 
-exit 0 
+exit 0

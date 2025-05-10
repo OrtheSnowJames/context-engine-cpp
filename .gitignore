@@ -47,7 +47,6 @@ Makefile
 *~
 
 # Emscripten specific
-.em-config
 *.wasm
 *.js
 *.html

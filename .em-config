@@ -1,0 +1,11 @@
+import os
+
+EMSCRIPTEN_ROOT = os.path.expanduser('/usr/share/emscripten')
+LLVM_ROOT = os.path.expanduser('/usr/bin')
+BINARYEN_ROOT = os.path.expanduser('/usr')
+NODE_JS = os.path.expanduser('/usr/bin/node')
+FROZEN_CACHE = False
+CACHE_DIR = os.path.expanduser('~/.emscripten_cache')
+TEMP_DIR = '/tmp'
+COMPILER_ENGINE = NODE_JS
+JS_ENGINES = [NODE_JS]

@@ -54,23 +54,25 @@ fi
 compile "Context Engine" "g++ -c context-engine.cpp -o build/context-engine.o $SDL_CFLAGS -std=c++17 -Wall -Wextra"
 if [ $? -ne 0 ]; then exit 1; fi
 
-# Compile and link the test executable
-compile "Test" "g++ -c test.cpp -o build/test.o $SDL_CFLAGS -std=c++17 -Wall -Wextra"
+# Compile the typing test game
+compile "Typing Test Game" "g++ -c typing_test.cpp -o build/typing_test.o $SDL_CFLAGS -std=c++17 -Wall -Wextra"
 if [ $? -ne 0 ]; then exit 1; fi
 
-compile "Test Executable" "g++ build/context-engine.o build/test.o -o build/test $SDL_LIBS $SDL_TTF_LIBS -std=c++17"
+# Link the final executable
+compile "Typing Test Executable" "g++ build/context-engine.o build/typing_test.o -o build/typing_test $SDL_LIBS $SDL_TTF_LIBS -std=c++17"
 if [ $? -ne 0 ]; then exit 1; fi
 
 # Copy assets to the build directory
 echo -e "${YELLOW}Copying assets to build directory...${NC}"
 mkdir -p build/assets
-cp -r assets/* build/assets/
+cp -r assets/* build/assets/ 2>/dev/null || true
+
 echo -e "${GREEN}Assets copied successfully${NC}"
 
 # Run the game if requested
 if [ "$1" == "run" ] || [ "$2" == "run" ]; then
-    echo -e "${YELLOW}Running Test...${NC}"
-    cd build && ./test
+    echo -e "${YELLOW}Running Typing Test...${NC}"
+    cd build && ./typing_test
 fi
 
 exit 0 
