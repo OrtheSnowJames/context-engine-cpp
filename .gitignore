@@ -1,0 +1,61 @@
+# Build directories
+build/
+build_wasm/
+emscripten_cache/
+web_template/
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+test
+sdl_test
+sdl2_test
+
+# CMake generated files
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+
+# IDE specific files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Emscripten specific
+.em-config
+*.wasm
+*.js
+*.html
+*.data
+
+# System Files
+.DS_Store
+Thumbs.db
+
+# Project specific
+*.log 
